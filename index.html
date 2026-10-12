@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wave to Binary Converter</title>
+<style>
+  :root {
+    --bg: #0B0A14;
+    --panel: #6A1B6E;
+    --panel2: #A21CAF;
+    --text: #FFFFFF;
+    --muted: #E9C9EE;
+    --accent: #E9C9EE;
+    --accent2: #FFFFFF;
+    --warn-bg: #6A1B6E;
+    --warn-border: #FFFFFF;
+    --warn-text: #FFFFFF;
+    --border: #A21CAF;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 0 0 60px;
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Segoe UI", Tahoma, Verdana, sans-serif;
+    line-height: 1.5;
+  }
+  header {
+    background: linear-gradient(135deg, #6A1B6E, #0B0A14);
+    border-bottom: 3px solid var(--accent);
+    padding: 26px 20px;
+    text-align: center;
+  }
+  header h1 { margin: 0 0 6px; font-size: 1.8rem; color: var(--accent); }
+  header .who { color: var(--muted); font-size: 1rem; }
+  header .who strong { color: var(--text); }
+  main { max-width: 900px; margin: 0 auto; padding: 0 18px; }
+  section {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 22px;
+  }
+  section h2 {
+    margin-top: 0;
+    font-size: 1.15rem;
+    color: var(--accent);
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 8px;
+  }
+  .inputs {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+  .inputs label { display: block; font-size: .85rem; color: var(--muted); margin-bottom: 4px; }
+  .inputs input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--panel2);
+    color: var(--text);
+    font-size: 1rem;
+  }
+  .inputs input:focus { outline: 2px solid var(--accent); }
+  .buttons { display: flex; gap: 12px; flex-wrap: wrap; }
+  button {
+    cursor: pointer;
+    border: none;
+    border-radius: 6px;
+    padding: 11px 26px;
+    font-size: 1rem;
+    font-weight: 600;
+    background: #A21CAF;
+    color: #FFFFFF;
+    transition: filter .15s, transform .05s;
+  }
+  button.secondary { background: #FFFFFF; color: #0B0A14; }
+  button:hover { filter: brightness(1.1); }
+  button:active { transform: translateY(1px); }
+  #warning {
+    display: none;
+    margin-top: 16px;
+    background: var(--warn-bg);
+    border: 1px solid var(--warn-border);
+    color: var(--warn-text);
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-weight: 600;
+  }
+  #results { display: none; }
+  .facts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 12px;
+  }
+  .fact {
+    background: var(--panel2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px;
+  }
+  .fact .k { font-size: .8rem; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; }
+  .fact .v { font-size: 1.25rem; font-weight: 700; color: var(--accent2); margin-top: 2px; }
+  table { width: 100%; border-collapse: collapse; margin-top: 10px; font-variant-numeric: tabular-nums; }
+  th, td { padding: 8px 10px; text-align: center; border-bottom: 1px solid var(--border); }
+  th { background: var(--panel2); color: var(--accent); font-size: .85rem; }
+  tbody tr:hover { background: rgba(162,28,175,.25); }
+  .binary-line {
+    margin-top: 14px;
+    background: #0B0A14;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px;
+    font-family: "Consolas", "Courier New", monospace;
+    font-size: 1.05rem;
+    color: var(--accent);
+    word-break: break-all;
+    line-height: 1.8;
+  }
+  .bits-total { margin-top: 10px; font-size: 1rem; color: var(--muted); }
+  .bits-total strong { color: var(--accent2); }
+  details { margin: 12px 0; background: var(--panel2); border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; }
+  details summary { cursor: pointer; font-weight: 600; color: var(--accent); }
+  details p { margin: 10px 0 4px; color: var(--text); }
+  .q { color: var(--accent2); font-weight: 600; }
+  .placeholder { color: var(--warn-text); }
+  footer { text-align: center; color: var(--muted); font-size: .8rem; margin-top: 26px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Wave to Binary Converter</h1>
+  <div class="who">
+    <strong>Michaela Denise Ong</strong> &nbsp;&middot;&nbsp; Section: <strong>BSCS 3 Section 37</strong>
+  </div>
+</header>
+
+<main>
+  <section>
+    <h2>1. Wave Settings</h2>
+    <div class="inputs">
+      <div>
+        <label for="freq">Frequency (Hz)</label>
+        <input type="number" id="freq" value="1000" step="any">
+      </div>
+      <div>
+        <label for="amp">Amplitude (0 to 1)</label>
+        <input type="number" id="amp" value="1" step="any">
+      </div>
+      <div>
+        <label for="samples">Number of samples (2 to 64)</label>
+        <input type="number" id="samples" value="4" step="1">
+      </div>
+      <div>
+        <label for="bits">Bits per sample (1 to 8)</label>
+        <input type="number" id="bits" value="2" step="1">
+      </div>
+    </div>
+    <div class="buttons">
+      <button id="convertBtn">Convert</button>
+      <button id="playBtn" class="secondary">Play 1s Tone</button>
+    </div>
+    <div id="warning" role="alert"></div>
+  </section>
+
+  <div id="results">
+    <section>
+      <h2>2. Wave Facts</h2>
+      <div class="facts">
+        <div class="fact"><div class="k">Amplitude</div><div class="v" id="fAmp">-</div></div>
+        <div class="fact"><div class="k">Frequency</div><div class="v" id="fFreq">-</div></div>
+        <div class="fact"><div class="k">Period</div><div class="v" id="fPeriod">-</div></div>
+        <div class="fact"><div class="k">Wavelength</div><div class="v" id="fWavelength">-</div></div>
+      </div>
+    </section>
+
+    <section>
+      <h2>3. Samples</h2>
+      <table id="sampleTable">
+        <thead>
+          <tr>
+            <th>Sample #</th>
+            <th>Time (ms)</th>
+            <th>Amplitude</th>
+            <th>Level</th>
+            <th>Binary</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>4. Binary Result</h2>
+      <div class="binary-line" id="binaryLine"></div>
+      <div class="bits-total">Total bits: <strong id="totalBits">0</strong></div>
+    </section>
+  </div>
+
+  <section>
+    <h2>5. Test Results</h2>
+    <p class="placeholder" style="color:var(--muted)">These are the exact values my app shows for each setting.</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Test</th><th>Frequency</th><th>Amplitude</th><th>Samples</th><th>Bits</th>
+          <th>Period</th><th>Wavelength</th><th>Total bits</th><th>Binary result</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>A</td><td>440</td><td>0.8</td><td>8</td><td>3</td>
+          <td>2.27 ms</td><td>78.0 cm</td><td>24</td>
+          <td style="font-family:monospace">100 101 110 101 100 010 001 010</td>
+        </tr>
+        <tr>
+          <td>B</td><td>200</td><td>0.5</td><td>6</td><td>4</td>
+          <td>5.00 ms</td><td>1.72 m</td><td>24</td>
+          <td style="font-family:monospace">1000 1011 1011 1000 0100 0100</td>
+        </tr>
+        <tr>
+          <td>C</td><td>500</td><td>0.9</td><td>5</td><td>3</td>
+          <td>2.00 ms</td><td>68.6 cm</td><td>15</td>
+          <td style="font-family:monospace">100 110 101 010 001</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>6. Explain It</h2>
+
+    <details open>
+      <summary>Q1. Why does the time of each sample use i &divide; n instead of the frequency?</summary>
+      <p>We are sampling <em>one full wave</em>, spread evenly over its period. The sample position
+      <span class="q">i &divide; n</span> is just the fraction of the way through that wave (0, 1/n, 2/n ... up to
+      (n-1)/n). Multiplying that fraction by the period gives the real time. This keeps the samples evenly spaced
+      across the wave no matter what the frequency is, so the frequency only sets the period and wavelength, not the
+      shape of the sampled wave.</p>
+    </details>
+
+    <details>
+      <summary>Q2. What does the level of a sample represent?</summary>
+      <p>The level is the sample's height <span class="q">quantized</span> onto a fixed number of steps. The height
+      runs from -1 to +1, but a digital system can only store a limited number of values. There are
+      <span class="q">2<sup>bits</sup></span> levels, numbered 0 up to levels-1. The formula
+      (height + 1) &divide; 2 &times; (levels - 1) maps the -1 to +1 range onto those step numbers, and rounding picks
+      the nearest step. For example, with 2 bits (4 levels, numbered 0-3) a height of 0 lands on level 2.</p>
+    </details>
+
+    <details>
+      <summary>Q3. Why must every binary value have exactly "bits" digits with leading zeros?</summary>
+      <p>Each sample is stored in a fixed number of bits, like a fixed-width slot in memory. Writing
+      <span class="q">2</span> as <span class="q">010</span> (3 bits) keeps every sample the same width so the totals
+      add up: samples &times; bits. If we dropped the leading zeros, 0, 1 and 10 would look like different sizes, the
+      bit count would be wrong, and a computer reading the stream would not know where one sample ends and the next
+      begins.</p>
+    </details>
+
+    <details>
+      <summary>Q4. Why do we round up when a height lands exactly halfway between two levels?</summary>
+      <p>A halfway value is a tie, and ties need one consistent rule so the same input always gives the same output.
+      We choose "round up" (toward the higher level) as a simple, predictable standard. Without a rule, different
+      roundings would make the binary result unpredictable and could make a rebuilt wave differ from the original.</p>
+    </details>
+  </section>
+
+  <footer>
+    Wave to Binary Converter &middot; Built for the sampling &amp; quantization assignment
+  </footer>
+</main>
+
+<script>
+  const $ = (id) => document.getElementById(id);
+  const freqEl = $("freq"), ampEl = $("amp"), samplesEl = $("samples"), bitsEl = $("bits");
+  const warningEl = $("warning"), resultsEl = $("results");
+
+  function showWarning(msg) {
+    warningEl.textContent = msg;
+    warningEl.style.display = "block";
+    resultsEl.style.display = "none";
+  }
+
+  function roundHalfUp(x) {
+    return Math.floor(x + 0.5);
+  }
+
+  function formatWavelength(meters) {
+    if (meters >= 1) return meters.toFixed(2) + " m";
+    return (meters * 100).toFixed(1) + " cm";
+  }
+
+  function convert() {
+    const freqRaw = freqEl.value.trim();
+    const ampRaw = ampEl.value.trim();
+    const samplesRaw = samplesEl.value.trim();
+    const bitsRaw = bitsEl.value.trim();
+
+    const freq = Number(freqRaw);
+    const amp = Number(ampRaw);
+    const n = Number(samplesRaw);
+    const bits = Number(bitsRaw);
+
+    if (freqRaw === "" || ampRaw === "" || samplesRaw === "" || bitsRaw === "") {
+      return showWarning("Warning: Please fill in all four boxes with numbers.");
+    }
+    if (!isFinite(freq) || !isFinite(amp) || !isFinite(n) || !isFinite(bits)) {
+      return showWarning("Warning: Please enter valid numbers only.");
+    }
+    if (freq <= 0) {
+      return showWarning("Warning: Frequency must be greater than 0.");
+    }
+    if (amp < 0 || amp > 1) {
+      return showWarning("Warning: Amplitude must be between 0 and 1.");
+    }
+    if (!Number.isInteger(n) || n < 2 || n > 64) {
+      return showWarning("Warning: Number of samples must be a whole number from 2 to 64.");
+    }
+    if (!Number.isInteger(bits) || bits < 1 || bits > 8) {
+      return showWarning("Warning: Bits per sample must be a whole number from 1 to 8.");
+    }
+
+    warningEl.style.display = "none";
+
+    const periodMs = (1 / freq) * 1000;
+    const wavelengthM = 343 / freq;
+    const levels = Math.pow(2, bits);
+
+    $("fAmp").textContent = ampRaw;
+    $("fFreq").textContent = freqRaw + " Hz";
+    $("fPeriod").textContent = periodMs.toFixed(2) + " ms";
+    $("fWavelength").textContent = formatWavelength(wavelengthM);
+
+    const tbody = $("sampleTable").querySelector("tbody");
+    tbody.innerHTML = "";
+    const binParts = [];
+
+    for (let i = 0; i < n; i++) {
+      const timeMs = (i * periodMs) / n;
+      const height = amp * Math.sin(2 * Math.PI * i / n);
+      const level = roundHalfUp(((height + 1) / 2) * (levels - 1));
+      const bin = level.toString(2).padStart(bits, "0");
+      binParts.push(bin);
+
+      const tr = document.createElement("tr");
+      tr.innerHTML =
+        "<td>" + (i + 1) + "</td>" +
+        "<td>" + timeMs.toFixed(2) + "</td>" +
+        "<td>" + height.toFixed(2) + "</td>" +
+        "<td>" + level + "</td>" +
+        "<td>" + bin + "</td>";
+      tbody.appendChild(tr);
+    }
+
+    $("binaryLine").textContent = binParts.join(" ");
+    $("totalBits").textContent = n * bits;
+    resultsEl.style.display = "block";
+  }
+
+  let audioCtx = null;
+  function playTone() {
+    const freq = Number(freqEl.value);
+    if (!isFinite(freq) || freq <= 0) {
+      return showWarning("Warning: Enter a frequency greater than 0 to play a tone.");
+    }
+    if (!audioCtx) {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    if (audioCtx.state === "suspended") audioCtx.resume();
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = "sine";
+    osc.frequency.value = freq;
+    gain.gain.value = 0.2;
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    const now = audioCtx.currentTime;
+    osc.start(now);
+    osc.stop(now + 1);
+  }
+
+  $("convertBtn").addEventListener("click", convert);
+  $("playBtn").addEventListener("click", playTone);
+
+  convert();
+</script>
+</body>
+</html>
