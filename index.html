@@ -45,7 +45,7 @@
     position: fixed;
     inset: 0;
     background:
-      radial-gradient(900px 520px at 50% 0%, rgba(139, 26, 26, .5), transparent 65%),
+      radial-gradient(900px 520px at 50% 0%, rgba(139, 26, 26, .32), transparent 65%),
       linear-gradient(180deg, rgba(10, 4, 4, .74), rgba(10, 4, 4, .88));
     z-index: -1;
   }
@@ -74,7 +74,7 @@
     letter-spacing: .1em;
     text-transform: uppercase;
     color: var(--cream);
-    text-shadow: 0 0 26px rgba(192, 57, 43, .6);
+    text-shadow: 0 0 10px rgba(192, 57, 43, .28);
   }
   .hero-wave { margin: 20px auto 0; max-width: 880px; height: 40px; }
   .hero-wave svg { width: 100%; height: 100%; }
@@ -264,7 +264,7 @@
     color: var(--cream);
     word-break: break-all;
     line-height: 1.9;
-    text-shadow: 0 0 12px rgba(192, 57, 43, .7);
+    text-shadow: 0 0 5px rgba(192, 57, 43, .3);
   }
   .bits-total {
     margin-top: 14px;
@@ -558,8 +558,8 @@
     }
     ctx.strokeStyle = "#F0C090";
     ctx.lineWidth = 2;
-    ctx.shadowColor = "rgba(192,57,43,.85)";
-    ctx.shadowBlur = 10;
+    ctx.shadowColor = "rgba(192,57,43,.4)";
+    ctx.shadowBlur = 4;
     ctx.stroke();
 
     for (let i = 0; i < n; i++) {
@@ -573,8 +573,8 @@
       ctx.moveTo(x, yOf(0));
       ctx.lineTo(x, y);
       ctx.stroke();
-      ctx.shadowColor = "rgba(240,192,144,.9)";
-      ctx.shadowBlur = 12;
+      ctx.shadowColor = "rgba(240,192,144,.5)";
+      ctx.shadowBlur = 5;
       ctx.fillStyle = "#F0C090";
       ctx.beginPath();
       ctx.arc(x, y, 3.6, 0, Math.PI * 2);
