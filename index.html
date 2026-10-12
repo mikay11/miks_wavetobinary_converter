@@ -6,13 +6,17 @@
 <title>Wave to Binary Converter</title>
 <style>
   :root {
-    --ink: #0B0A14;
-    --plum: #6A1B6E;
-    --neon: #A21CAF;
-    --white: #FFFFFF;
-    --soft: #cbb6d6;
-    --line: rgba(162, 28, 175, .26);
-    --line-strong: rgba(162, 28, 175, .55);
+    --ink: #0A0404;
+    --maroon: #2A0707;
+    --wine: #5A0D0D;
+    --crimson: #A61B1B;
+    --ember: #C0392B;
+    --ember-bright: #E24A3A;
+    --cream: #F0C090;
+    --cream-soft: #DCC0A0;
+    --text: #FBEAD8;
+    --line: rgba(240, 192, 144, .18);
+    --line-strong: rgba(192, 57, 43, .6);
     --mono: "Consolas", "SFMono-Regular", "Courier New", monospace;
   }
   * { box-sizing: border-box; }
@@ -20,46 +24,13 @@
     margin: 0;
     min-height: 100vh;
     background:
-      radial-gradient(900px 520px at 50% -12%, rgba(106, 27, 110, .38), transparent 62%),
-      radial-gradient(700px 400px at 100% 0%, rgba(162, 28, 175, .14), transparent 55%),
+      radial-gradient(900px 520px at 50% -12%, rgba(139, 26, 26, .45), transparent 62%),
+      radial-gradient(700px 400px at 100% 0%, rgba(192, 57, 43, .18), transparent 55%),
       var(--ink);
-    color: var(--white);
+    color: var(--text);
     font-family: "Segoe UI", Tahoma, Verdana, sans-serif;
     line-height: 1.6;
   }
-
-  header {
-    text-align: center;
-    padding: 54px 20px 30px;
-    border-bottom: 1px solid var(--line);
-  }
-  .tag {
-    display: inline-block;
-    padding: 5px 15px;
-    margin-bottom: 18px;
-    font-family: var(--mono);
-    font-size: .68rem;
-    letter-spacing: .36em;
-    text-transform: uppercase;
-    color: var(--soft);
-    border: 1px solid var(--line);
-    border-radius: 999px;
-  }
-  header h1 {
-    margin: 0;
-    font-size: clamp(1.9rem, 6vw, 3rem);
-    font-weight: 700;
-    letter-spacing: .1em;
-    text-transform: uppercase;
-    color: var(--white);
-    text-shadow: 0 0 26px rgba(162, 28, 175, .55);
-  }
-  header .who {
-    margin-top: 14px;
-    font-size: .95rem;
-    color: var(--soft);
-  }
-  header .who strong { color: var(--white); font-weight: 600; }
 
   .page { display: flex; align-items: flex-start; }
 
@@ -72,7 +43,7 @@
     align-self: flex-start;
     padding: 44px 28px;
     border-right: 1px solid var(--line);
-    background: linear-gradient(180deg, rgba(106, 27, 110, .30), transparent 60%), var(--ink);
+    background: linear-gradient(180deg, rgba(90, 13, 13, .5), transparent 60%), var(--ink);
   }
   .portrait {
     display: block;
@@ -80,15 +51,15 @@
     height: auto;
     border-radius: 16px;
     border: 1px solid var(--line-strong);
-    box-shadow: 0 0 46px rgba(162, 28, 175, .45);
+    box-shadow: 0 0 46px rgba(192, 57, 43, .45);
   }
   .sidebar .who {
     margin-top: 24px;
     font-size: .95rem;
     line-height: 1.75;
-    color: var(--soft);
+    color: var(--cream-soft);
   }
-  .sidebar .who strong { color: var(--white); font-weight: 600; }
+  .sidebar .who strong { color: var(--cream); font-weight: 600; }
 
   .content { flex: 1 1 auto; min-width: 0; }
 
@@ -109,13 +80,39 @@
     .sidebar .who { margin-top: 0; }
   }
 
+  header {
+    text-align: center;
+    padding: 54px 20px 30px;
+    border-bottom: 1px solid var(--line);
+  }
+  .tag {
+    display: inline-block;
+    padding: 5px 15px;
+    margin-bottom: 18px;
+    font-family: var(--mono);
+    font-size: .68rem;
+    letter-spacing: .36em;
+    text-transform: uppercase;
+    color: var(--cream-soft);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+  }
+  header h1 {
+    margin: 0;
+    font-size: clamp(1.9rem, 6vw, 3rem);
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--cream);
+    text-shadow: 0 0 26px rgba(192, 57, 43, .6);
+  }
   .hero-wave { margin: 20px auto 0; max-width: 880px; height: 40px; }
   .hero-wave svg { width: 100%; height: 100%; }
   .hero-wave path {
     fill: none;
-    stroke: var(--neon);
+    stroke: var(--ember);
     stroke-width: 2;
-    opacity: .85;
+    opacity: .9;
     stroke-dasharray: 2600;
     stroke-dashoffset: 2600;
     animation: draw 2.6s ease forwards;
@@ -127,7 +124,7 @@
   section {
     margin-top: 26px;
     padding: 26px 24px;
-    background: rgba(106, 27, 110, .10);
+    background: rgba(42, 7, 7, .55);
     border: 1px solid var(--line);
     border-radius: 12px;
   }
@@ -138,7 +135,7 @@
     font-weight: 700;
     letter-spacing: .24em;
     text-transform: uppercase;
-    color: var(--white);
+    color: var(--text);
     border-bottom: 1px solid var(--line);
   }
   section h2::before {
@@ -146,7 +143,7 @@
     display: inline-block;
     width: 7px; height: 7px;
     margin-right: 10px;
-    background: var(--neon);
+    background: var(--ember);
     border-radius: 50%;
     vertical-align: middle;
   }
@@ -163,23 +160,23 @@
     font-size: .7rem;
     letter-spacing: .12em;
     text-transform: uppercase;
-    color: var(--soft);
+    color: var(--cream-soft);
   }
   .inputs input {
     width: 100%;
     padding: 12px;
-    background: rgba(11, 10, 20, .6);
+    background: rgba(10, 4, 4, .7);
     border: 1px solid var(--line);
     border-radius: 8px;
-    color: var(--white);
+    color: var(--text);
     font-family: var(--mono);
     font-size: 1.05rem;
     transition: border-color .15s, box-shadow .15s;
   }
   .inputs input:focus {
     outline: none;
-    border-color: var(--neon);
-    box-shadow: 0 0 0 3px rgba(162, 28, 175, .25);
+    border-color: var(--ember);
+    box-shadow: 0 0 0 3px rgba(192, 57, 43, .28);
   }
 
   .buttons { display: flex; gap: 12px; flex-wrap: wrap; }
@@ -191,29 +188,30 @@
     font-weight: 600;
     letter-spacing: .1em;
     text-transform: uppercase;
-    color: var(--white);
-    background: var(--neon);
+    color: #FFF6EA;
+    background: linear-gradient(180deg, var(--ember), #7A1010);
     border: 1px solid transparent;
     border-radius: 8px;
-    transition: background .15s, transform .06s;
+    transition: filter .15s, transform .06s;
   }
-  button:hover { background: #b530bf; }
+  button:hover { filter: brightness(1.15); }
   button:active { transform: translateY(1px); }
   button.secondary {
     background: transparent;
     border-color: var(--line-strong);
+    color: var(--text);
   }
-  button.secondary:hover { background: rgba(162, 28, 175, .18); }
+  button.secondary:hover { background: rgba(192, 57, 43, .16); }
 
   #warning {
     display: none;
     margin-top: 18px;
     padding: 14px 16px;
-    background: rgba(162, 28, 175, .15);
+    background: rgba(166, 27, 27, .2);
     border: 1px solid var(--line-strong);
-    border-left: 3px solid var(--neon);
+    border-left: 3px solid var(--ember-bright);
     border-radius: 8px;
-    color: var(--white);
+    color: var(--text);
     font-size: .9rem;
   }
 
@@ -226,7 +224,7 @@
   }
   .fact {
     padding: 16px;
-    background: rgba(11, 10, 20, .45);
+    background: rgba(10, 4, 4, .5);
     border: 1px solid var(--line);
     border-radius: 10px;
   }
@@ -234,21 +232,21 @@
     font-size: .68rem;
     letter-spacing: .14em;
     text-transform: uppercase;
-    color: var(--soft);
+    color: var(--cream-soft);
   }
   .fact .v {
     margin-top: 5px;
     font-family: var(--mono);
     font-size: 1.35rem;
     font-weight: 700;
-    color: var(--white);
+    color: var(--cream);
   }
 
   #scope {
     display: block;
     width: 100%;
     height: 220px;
-    background: rgba(11, 10, 20, .6);
+    background: rgba(10, 4, 4, .6);
     border: 1px solid var(--line);
     border-radius: 10px;
   }
@@ -263,49 +261,49 @@
     font-weight: 700;
     letter-spacing: .1em;
     text-transform: uppercase;
-    color: var(--soft);
+    color: var(--cream-soft);
   }
   td {
     border-bottom: 1px solid var(--line);
     font-family: var(--mono);
     font-size: .95rem;
-    color: var(--white);
+    color: var(--text);
   }
-  td:last-child { color: var(--soft); letter-spacing: .14em; }
+  td:last-child { color: var(--cream); letter-spacing: .14em; }
   tbody tr { animation: rowin .35s ease both; }
   tbody tr:last-child td { border-bottom: none; }
-  tbody tr:hover { background: rgba(162, 28, 175, .09); }
+  tbody tr:hover { background: rgba(192, 57, 43, .12); }
   @keyframes rowin { from { opacity: 0; } to { opacity: 1; } }
 
   .binary-line {
     padding: 18px;
-    background: rgba(11, 10, 20, .6);
+    background: rgba(10, 4, 4, .6);
     border: 1px solid var(--line);
-    border-left: 3px solid var(--neon);
+    border-left: 3px solid var(--ember);
     border-radius: 10px;
     font-family: var(--mono);
     font-size: 1.12rem;
     letter-spacing: .12em;
-    color: var(--white);
+    color: var(--cream);
     word-break: break-all;
     line-height: 1.9;
-    text-shadow: 0 0 12px rgba(162, 28, 175, .6);
+    text-shadow: 0 0 12px rgba(192, 57, 43, .7);
   }
   .bits-total {
     margin-top: 14px;
     font-size: .78rem;
     letter-spacing: .12em;
     text-transform: uppercase;
-    color: var(--soft);
+    color: var(--cream-soft);
   }
-  .bits-total strong { color: var(--white); font-size: 1.15rem; }
+  .bits-total strong { color: var(--cream); font-size: 1.15rem; }
 
-  .note { margin: 14px 0 0; color: var(--soft); font-size: .82rem; }
+  .note { margin: 14px 0 0; color: var(--cream-soft); font-size: .82rem; }
 
   details {
     margin: 12px 0;
     padding: 14px 18px;
-    background: rgba(11, 10, 20, .4);
+    background: rgba(10, 4, 4, .45);
     border: 1px solid var(--line);
     border-radius: 10px;
   }
@@ -313,14 +311,14 @@
     cursor: pointer;
     font-size: .85rem;
     font-weight: 600;
-    color: var(--white);
+    color: var(--text);
     list-style: none;
   }
   details summary::-webkit-details-marker { display: none; }
-  details summary::before { content: "＋ "; color: var(--neon); font-weight: 700; }
+  details summary::before { content: "＋ "; color: var(--ember); font-weight: 700; }
   details[open] summary::before { content: "－ "; }
-  details p { margin: 12px 0 2px; color: var(--soft); }
-  .q { color: var(--white); font-weight: 600; }
+  details p { margin: 12px 0 2px; color: var(--cream-soft); }
+  .q { color: var(--cream); font-weight: 600; }
 
   footer {
     text-align: center;
@@ -328,7 +326,7 @@
     font-size: .72rem;
     letter-spacing: .2em;
     text-transform: uppercase;
-    color: var(--soft);
+    color: var(--cream-soft);
   }
 </style>
 </head>
@@ -545,7 +543,7 @@
     const xOf = (t) => padX + t * plotW;
     const yOf = (v) => padY + (1 - (v + 1) / 2) * plotH;
 
-    ctx.strokeStyle = "rgba(162,28,175,.22)";
+    ctx.strokeStyle = "rgba(192,57,43,.22)";
     ctx.lineWidth = 1;
     ctx.beginPath();
     for (let gx = 0; gx <= 4; gx++) {
@@ -560,7 +558,7 @@
     }
     ctx.stroke();
 
-    ctx.strokeStyle = "rgba(255,255,255,.3)";
+    ctx.strokeStyle = "rgba(240,192,144,.3)";
     ctx.beginPath();
     ctx.moveTo(padX, yOf(0));
     ctx.lineTo(padX + plotW, yOf(0));
@@ -568,8 +566,8 @@
 
     const levels = Math.pow(2, bits);
     ctx.setLineDash([5, 7]);
-    ctx.strokeStyle = "rgba(162,28,175,.45)";
-    ctx.fillStyle = "rgba(203,182,214,.6)";
+    ctx.strokeStyle = "rgba(192,57,43,.5)";
+    ctx.fillStyle = "rgba(220,192,160,.6)";
     ctx.font = "10px Consolas, monospace";
     ctx.textAlign = "right";
     for (let q = 0; q < levels; q++) {
@@ -590,9 +588,9 @@
       const x = xOf(t), y = yOf(v);
       if (s === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
     }
-    ctx.strokeStyle = "#FFFFFF";
+    ctx.strokeStyle = "#F0C090";
     ctx.lineWidth = 2;
-    ctx.shadowColor = "rgba(162,28,175,.8)";
+    ctx.shadowColor = "rgba(192,57,43,.85)";
     ctx.shadowBlur = 10;
     ctx.stroke();
 
@@ -601,15 +599,15 @@
       const v = amp * Math.sin(2 * Math.PI * i / n);
       const x = xOf(t), y = yOf(v);
       ctx.shadowBlur = 0;
-      ctx.strokeStyle = "rgba(255,255,255,.4)";
+      ctx.strokeStyle = "rgba(240,192,144,.4)";
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(x, yOf(0));
       ctx.lineTo(x, y);
       ctx.stroke();
-      ctx.shadowColor = "rgba(255,255,255,.85)";
+      ctx.shadowColor = "rgba(240,192,144,.9)";
       ctx.shadowBlur = 12;
-      ctx.fillStyle = "#FFFFFF";
+      ctx.fillStyle = "#F0C090";
       ctx.beginPath();
       ctx.arc(x, y, 3.6, 0, Math.PI * 2);
       ctx.fill();
