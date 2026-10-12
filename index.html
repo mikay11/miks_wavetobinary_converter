@@ -6,144 +6,367 @@
 <title>Wave to Binary Converter</title>
 <style>
   :root {
-    --bg: #0B0A14;
-    --panel: #6A1B6E;
-    --panel2: #A21CAF;
-    --text: #FFFFFF;
-    --muted: #E9C9EE;
-    --accent: #E9C9EE;
-    --accent2: #FFFFFF;
-    --warn-bg: #6A1B6E;
-    --warn-border: #FFFFFF;
-    --warn-text: #FFFFFF;
-    --border: #A21CAF;
+    --ink: #0B0A14;
+    --plum: #6A1B6E;
+    --neon: #A21CAF;
+    --white: #FFFFFF;
+    --soft: #E9C9EE;
+    --line: rgba(162, 28, 175, .38);
+    --glow: rgba(162, 28, 175, .9);
+    --mono: "Consolas", "SFMono-Regular", "Courier New", monospace;
   }
   * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
   body {
     margin: 0;
-    padding: 0 0 60px;
-    background: var(--bg);
-    color: var(--text);
+    min-height: 100vh;
+    background:
+      radial-gradient(circle at 12% -10%, rgba(106, 27, 110, .60), transparent 42%),
+      radial-gradient(circle at 92% 4%, rgba(162, 28, 175, .40), transparent 38%),
+      radial-gradient(circle at 50% 120%, rgba(106, 27, 110, .45), transparent 55%),
+      var(--ink);
+    color: var(--white);
     font-family: "Segoe UI", Tahoma, Verdana, sans-serif;
-    line-height: 1.5;
+    line-height: 1.55;
+    overflow-x: hidden;
   }
+  /* animated grid + scanlines */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: -50%;
+    background-image:
+      linear-gradient(rgba(162, 28, 175, .14) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(162, 28, 175, .14) 1px, transparent 1px);
+    background-size: 46px 46px;
+    animation: gridpan 7s linear infinite;
+    pointer-events: none;
+    z-index: 0;
+  }
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(to bottom, rgba(255, 255, 255, .028) 0 1px, transparent 1px 3px);
+    pointer-events: none;
+    z-index: 0;
+  }
+  @keyframes gridpan {
+    from { background-position: 0 0; }
+    to { background-position: 46px 46px; }
+  }
+
+  header, main { position: relative; z-index: 1; }
+
   header {
-    background: linear-gradient(135deg, #6A1B6E, #0B0A14);
-    border-bottom: 3px solid var(--accent);
-    padding: 26px 20px;
     text-align: center;
+    padding: 46px 20px 26px;
+    background: linear-gradient(180deg, rgba(106, 27, 110, .55), rgba(11, 10, 20, .1));
+    border-bottom: 1px solid var(--line);
   }
-  header h1 { margin: 0 0 6px; font-size: 1.8rem; color: var(--accent); }
-  header .who { color: var(--muted); font-size: 1rem; }
-  header .who strong { color: var(--text); }
-  main { max-width: 900px; margin: 0 auto; padding: 0 18px; }
+  .tag {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: .72rem;
+    letter-spacing: .42em;
+    color: var(--soft);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 5px 16px 5px 20px;
+    margin-bottom: 18px;
+    text-transform: uppercase;
+    box-shadow: 0 0 18px rgba(162, 28, 175, .35), inset 0 0 12px rgba(162, 28, 175, .25);
+  }
+  header h1 {
+    margin: 0;
+    font-size: clamp(1.9rem, 6vw, 3.3rem);
+    font-weight: 800;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--white);
+    text-shadow: 0 0 6px #fff, 0 0 20px var(--neon), 0 0 46px var(--neon);
+  }
+  header .who {
+    margin-top: 14px;
+    font-family: var(--mono);
+    font-size: .95rem;
+    letter-spacing: .06em;
+    color: var(--soft);
+  }
+  header .who strong { color: var(--white); }
+  .hero-wave { margin: 18px auto 0; max-width: 900px; height: 58px; }
+  .hero-wave svg { width: 100%; height: 100%; overflow: visible; }
+  .hero-wave path {
+    fill: none;
+    stroke: var(--white);
+    stroke-width: 2;
+    filter: drop-shadow(0 0 5px var(--neon)) drop-shadow(0 0 16px var(--neon));
+    stroke-dasharray: 2600;
+    stroke-dashoffset: 2600;
+    animation: draw 3s ease forwards, pulse 2.6s ease-in-out infinite alternate 3s;
+  }
+  @keyframes draw { to { stroke-dashoffset: 0; } }
+  @keyframes pulse { from { opacity: .55; } to { opacity: 1; } }
+
+  main { max-width: 940px; margin: 0 auto; padding: 0 18px 70px; }
+
   section {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 20px;
-    margin-top: 22px;
+    position: relative;
+    margin-top: 30px;
+    padding: 26px 22px;
+    background: linear-gradient(180deg, rgba(106, 27, 110, .22), rgba(11, 10, 20, .62));
+    border: 1px solid var(--line);
+    border-radius: 5px;
+    box-shadow: 0 0 30px rgba(162, 28, 175, .12), inset 0 0 40px rgba(162, 28, 175, .06);
   }
+  section::before, section::after {
+    content: "";
+    position: absolute;
+    width: 16px; height: 16px;
+    border: 2px solid var(--neon);
+    filter: drop-shadow(0 0 4px var(--neon));
+  }
+  section::before { top: -1px; left: -1px; border-right: none; border-bottom: none; }
+  section::after { bottom: -1px; right: -1px; border-left: none; border-top: none; }
+
   section h2 {
-    margin-top: 0;
-    font-size: 1.15rem;
-    color: var(--accent);
-    border-bottom: 1px solid var(--border);
-    padding-bottom: 8px;
+    margin: 0 0 18px;
+    padding-left: 14px;
+    font-size: .96rem;
+    font-weight: 700;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: var(--white);
+    border-left: 3px solid var(--neon);
+    text-shadow: 0 0 12px var(--glow);
   }
+
   .inputs {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 14px;
-    margin-bottom: 16px;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 16px;
+    margin-bottom: 20px;
   }
-  .inputs label { display: block; font-size: .85rem; color: var(--muted); margin-bottom: 4px; }
+  .inputs label {
+    display: block;
+    margin-bottom: 6px;
+    font-family: var(--mono);
+    font-size: .68rem;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--soft);
+  }
   .inputs input {
     width: 100%;
-    padding: 10px;
-    border-radius: 6px;
-    border: 1px solid var(--border);
-    background: var(--panel2);
-    color: var(--text);
-    font-size: 1rem;
+    padding: 11px 12px;
+    background: rgba(11, 10, 20, .75);
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    color: var(--white);
+    font-family: var(--mono);
+    font-size: 1.05rem;
+    letter-spacing: .04em;
+    box-shadow: inset 0 0 14px rgba(162, 28, 175, .16);
+    transition: border-color .15s, box-shadow .15s;
   }
-  .inputs input:focus { outline: 2px solid var(--accent); }
-  .buttons { display: flex; gap: 12px; flex-wrap: wrap; }
+  .inputs input:focus {
+    outline: none;
+    border-color: var(--neon);
+    box-shadow: 0 0 0 2px rgba(162, 28, 175, .35), 0 0 20px rgba(162, 28, 175, .55);
+  }
+  .buttons { display: flex; gap: 14px; flex-wrap: wrap; }
   button {
     cursor: pointer;
-    border: none;
-    border-radius: 6px;
-    padding: 11px 26px;
-    font-size: 1rem;
-    font-weight: 600;
-    background: #A21CAF;
-    color: #FFFFFF;
-    transition: filter .15s, transform .05s;
+    padding: 12px 30px;
+    font-family: inherit;
+    font-size: .82rem;
+    font-weight: 700;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--white);
+    background: linear-gradient(180deg, var(--neon), var(--plum));
+    border: 1px solid var(--neon);
+    border-radius: 3px;
+    box-shadow: 0 0 18px rgba(162, 28, 175, .55), inset 0 0 10px rgba(255, 255, 255, .12);
+    transition: transform .08s, box-shadow .15s, filter .15s;
   }
-  button.secondary { background: #FFFFFF; color: #0B0A14; }
-  button:hover { filter: brightness(1.1); }
+  button:hover { filter: brightness(1.15); box-shadow: 0 0 30px rgba(162, 28, 175, .9); }
   button:active { transform: translateY(1px); }
+  button.secondary {
+    background: transparent;
+    box-shadow: inset 0 0 14px rgba(162, 28, 175, .35), 0 0 12px rgba(162, 28, 175, .3);
+  }
+  button.secondary:hover { background: rgba(162, 28, 175, .22); }
+
   #warning {
     display: none;
-    margin-top: 16px;
-    background: var(--warn-bg);
-    border: 1px solid var(--warn-border);
-    color: var(--warn-text);
-    padding: 12px 16px;
-    border-radius: 8px;
-    font-weight: 600;
+    margin-top: 18px;
+    padding: 13px 16px;
+    background: rgba(162, 28, 175, .18);
+    border: 1px solid var(--neon);
+    border-left: 4px solid var(--white);
+    border-radius: 3px;
+    color: var(--white);
+    font-family: var(--mono);
+    font-size: .9rem;
+    letter-spacing: .02em;
+    box-shadow: 0 0 24px rgba(162, 28, 175, .5);
+    animation: blink 1.1s steps(2, start) infinite;
   }
+  @keyframes blink { 50% { opacity: .6; } }
+
   #results { display: none; }
+
   .facts {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 12px;
+    gap: 14px;
   }
   .fact {
-    background: var(--panel2);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 12px;
+    position: relative;
+    padding: 15px 15px 13px;
+    background: rgba(11, 10, 20, .6);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    overflow: hidden;
   }
-  .fact .k { font-size: .8rem; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; }
-  .fact .v { font-size: 1.25rem; font-weight: 700; color: var(--accent2); margin-top: 2px; }
-  table { width: 100%; border-collapse: collapse; margin-top: 10px; font-variant-numeric: tabular-nums; }
-  th, td { padding: 8px 10px; text-align: center; border-bottom: 1px solid var(--border); }
-  th { background: var(--panel2); color: var(--accent); font-size: .85rem; }
-  tbody tr:hover { background: rgba(162,28,175,.25); }
+  .fact::after {
+    content: "";
+    position: absolute;
+    left: 0; bottom: 0;
+    width: 100%; height: 2px;
+    background: linear-gradient(90deg, var(--neon), transparent);
+  }
+  .fact .k {
+    font-family: var(--mono);
+    font-size: .66rem;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--soft);
+  }
+  .fact .v {
+    margin-top: 4px;
+    font-family: var(--mono);
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--white);
+    text-shadow: 0 0 12px var(--glow);
+  }
+
+  #scope {
+    display: block;
+    width: 100%;
+    height: 210px;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    background: radial-gradient(circle at 50% 50%, rgba(106, 27, 110, .3), rgba(11, 10, 20, .92));
+    box-shadow: inset 0 0 50px rgba(162, 28, 175, .22);
+  }
+
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; margin-top: 6px; font-variant-numeric: tabular-nums; }
+  th, td { padding: 9px 10px; text-align: center; }
+  th {
+    background: rgba(162, 28, 175, .18);
+    border-bottom: 1px solid var(--neon);
+    font-family: var(--mono);
+    font-size: .68rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--white);
+  }
+  td {
+    border-bottom: 1px solid var(--line);
+    font-family: var(--mono);
+    font-size: .95rem;
+    color: var(--white);
+  }
+  td:last-child { color: var(--soft); letter-spacing: .14em; }
+  tbody tr { animation: rowin .38s ease both; }
+  tbody tr:hover { background: rgba(162, 28, 175, .16); }
+  @keyframes rowin { from { opacity: 0; transform: translateX(-8px); } to { opacity: 1; transform: none; } }
+
   .binary-line {
-    margin-top: 14px;
-    background: #0B0A14;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 14px;
-    font-family: "Consolas", "Courier New", monospace;
-    font-size: 1.05rem;
-    color: var(--accent);
+    margin-top: 6px;
+    padding: 18px 16px;
+    background: rgba(11, 10, 20, .88);
+    border: 1px solid var(--neon);
+    border-radius: 4px;
+    font-family: var(--mono);
+    font-size: 1.15rem;
+    letter-spacing: .1em;
+    color: var(--white);
     word-break: break-all;
-    line-height: 1.8;
+    line-height: 1.9;
+    text-shadow: 0 0 8px var(--neon), 0 0 22px rgba(162, 28, 175, .7);
+    box-shadow: inset 0 0 34px rgba(162, 28, 175, .25), 0 0 22px rgba(162, 28, 175, .3);
   }
-  .bits-total { margin-top: 10px; font-size: 1rem; color: var(--muted); }
-  .bits-total strong { color: var(--accent2); }
-  details { margin: 12px 0; background: var(--panel2); border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; }
-  details summary { cursor: pointer; font-weight: 600; color: var(--accent); }
-  details p { margin: 10px 0 4px; color: var(--text); }
-  .q { color: var(--accent2); font-weight: 600; }
-  .placeholder { color: var(--warn-text); }
-  footer { text-align: center; color: var(--muted); font-size: .8rem; margin-top: 26px; }
+  .bits-total {
+    margin-top: 14px;
+    font-family: var(--mono);
+    font-size: .9rem;
+    letter-spacing: .08em;
+    color: var(--soft);
+    text-transform: uppercase;
+  }
+  .bits-total strong { color: var(--white); font-size: 1.15rem; text-shadow: 0 0 12px var(--glow); }
+
+  .note { color: var(--soft); font-family: var(--mono); font-size: .8rem; letter-spacing: .04em; }
+
+  details {
+    margin: 12px 0;
+    padding: 12px 16px;
+    background: rgba(11, 10, 20, .55);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--neon);
+    border-radius: 4px;
+  }
+  details[open] { box-shadow: 0 0 22px rgba(162, 28, 175, .2); }
+  details summary {
+    cursor: pointer;
+    font-family: var(--mono);
+    font-size: .84rem;
+    letter-spacing: .04em;
+    color: var(--white);
+    list-style: none;
+  }
+  details summary::-webkit-details-marker { display: none; }
+  details summary::before { content: "[+] "; color: var(--neon); }
+  details[open] summary::before { content: "[-] "; }
+  details p { margin: 12px 0 2px; color: var(--soft); }
+  .q { color: var(--white); font-weight: 700; }
+
+  footer {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 30px 18px 0;
+    font-family: var(--mono);
+    font-size: .72rem;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--soft);
+  }
+  footer::before { content: "// "; color: var(--neon); }
 </style>
 </head>
 <body>
 <header>
-  <h1>Wave to Binary Converter</h1>
+  <span class="tag">Signal Lab</span>
+  <h1>Wave&nbsp;&rarr;&nbsp;Binary</h1>
   <div class="who">
     <strong>Michaela Denise Ong</strong> &nbsp;&middot;&nbsp; Section: <strong>BSCS 3 Section 37</strong>
+  </div>
+  <div class="hero-wave">
+    <svg viewBox="0 0 1200 80" preserveAspectRatio="none" aria-hidden="true">
+      <path id="heroPath"></path>
+    </svg>
   </div>
 </header>
 
 <main>
   <section>
-    <h2>1. Wave Settings</h2>
+    <h2>01 &mdash; Wave Settings</h2>
     <div class="inputs">
       <div>
         <label for="freq">Frequency (Hz)</label>
@@ -154,7 +377,7 @@
         <input type="number" id="amp" value="1" step="any">
       </div>
       <div>
-        <label for="samples">Number of samples (2 to 64)</label>
+        <label for="samples">Samples (2 to 64)</label>
         <input type="number" id="samples" value="4" step="1">
       </div>
       <div>
@@ -171,7 +394,7 @@
 
   <div id="results">
     <section>
-      <h2>2. Wave Facts</h2>
+      <h2>02 &mdash; Wave Facts</h2>
       <div class="facts">
         <div class="fact"><div class="k">Amplitude</div><div class="v" id="fAmp">-</div></div>
         <div class="fact"><div class="k">Frequency</div><div class="v" id="fFreq">-</div></div>
@@ -181,60 +404,70 @@
     </section>
 
     <section>
-      <h2>3. Samples</h2>
-      <table id="sampleTable">
-        <thead>
-          <tr>
-            <th>Sample #</th>
-            <th>Time (ms)</th>
-            <th>Amplitude</th>
-            <th>Level</th>
-            <th>Binary</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
+      <h2>03 &mdash; Signal View</h2>
+      <canvas id="scope" width="600" height="210"></canvas>
+      <p class="note">White curve = the wave. Dashed lines = the 2<sup>bits</sup> levels. Dots = your samples.</p>
     </section>
 
     <section>
-      <h2>4. Binary Result</h2>
+      <h2>04 &mdash; Samples</h2>
+      <div class="table-wrap">
+        <table id="sampleTable">
+          <thead>
+            <tr>
+              <th>Sample #</th>
+              <th>Time (ms)</th>
+              <th>Amplitude</th>
+              <th>Level</th>
+              <th>Binary</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section>
+      <h2>05 &mdash; Binary Result</h2>
       <div class="binary-line" id="binaryLine"></div>
       <div class="bits-total">Total bits: <strong id="totalBits">0</strong></div>
     </section>
   </div>
 
   <section>
-    <h2>5. Test Results</h2>
-    <p class="placeholder" style="color:var(--muted)">These are the exact values my app shows for each setting.</p>
-    <table>
-      <thead>
-        <tr>
-          <th>Test</th><th>Frequency</th><th>Amplitude</th><th>Samples</th><th>Bits</th>
-          <th>Period</th><th>Wavelength</th><th>Total bits</th><th>Binary result</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>A</td><td>440</td><td>0.8</td><td>8</td><td>3</td>
-          <td>2.27 ms</td><td>78.0 cm</td><td>24</td>
-          <td style="font-family:monospace">100 101 110 101 100 010 001 010</td>
-        </tr>
-        <tr>
-          <td>B</td><td>200</td><td>0.5</td><td>6</td><td>4</td>
-          <td>5.00 ms</td><td>1.72 m</td><td>24</td>
-          <td style="font-family:monospace">1000 1011 1011 1000 0100 0100</td>
-        </tr>
-        <tr>
-          <td>C</td><td>500</td><td>0.9</td><td>5</td><td>3</td>
-          <td>2.00 ms</td><td>68.6 cm</td><td>15</td>
-          <td style="font-family:monospace">100 110 101 010 001</td>
-        </tr>
-      </tbody>
-    </table>
+    <h2>06 &mdash; Test Results</h2>
+    <p class="note">These are the exact values my app shows for each setting.</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Test</th><th>Frequency</th><th>Amplitude</th><th>Samples</th><th>Bits</th>
+            <th>Period</th><th>Wavelength</th><th>Total bits</th><th>Binary result</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>A</td><td>440</td><td>0.8</td><td>8</td><td>3</td>
+            <td>2.27 ms</td><td>78.0 cm</td><td>24</td>
+            <td>100 101 110 101 100 010 001 010</td>
+          </tr>
+          <tr>
+            <td>B</td><td>200</td><td>0.5</td><td>6</td><td>4</td>
+            <td>5.00 ms</td><td>1.72 m</td><td>24</td>
+            <td>1000 1011 1011 1000 0100 0100</td>
+          </tr>
+          <tr>
+            <td>C</td><td>500</td><td>0.9</td><td>5</td><td>3</td>
+            <td>2.00 ms</td><td>68.6 cm</td><td>15</td>
+            <td>100 110 101 010 001</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </section>
 
   <section>
-    <h2>6. Explain It</h2>
+    <h2>07 &mdash; Explain It</h2>
 
     <details open>
       <summary>Q1. Why does the time of each sample use i &divide; n instead of the frequency?</summary>
@@ -271,15 +504,25 @@
     </details>
   </section>
 
-  <footer>
-    Wave to Binary Converter &middot; Built for the sampling &amp; quantization assignment
-  </footer>
+  <footer>Wave to Binary Converter &middot; Sampling &amp; Quantization</footer>
 </main>
 
 <script>
   const $ = (id) => document.getElementById(id);
   const freqEl = $("freq"), ampEl = $("amp"), samplesEl = $("samples"), bitsEl = $("bits");
   const warningEl = $("warning"), resultsEl = $("results");
+  const scope = $("scope");
+  let lastParams = null;
+
+  /* header decorative wave */
+  (function heroWave() {
+    let d = "M 0 40";
+    for (let x = 0; x <= 1200; x += 6) {
+      const y = 40 + 26 * Math.sin((x / 1200) * Math.PI * 2 * 3);
+      d += " L " + x + " " + y.toFixed(2);
+    }
+    $("heroPath").setAttribute("d", d);
+  })();
 
   function showWarning(msg) {
     warningEl.textContent = msg;
@@ -294,6 +537,93 @@
   function formatWavelength(meters) {
     if (meters >= 1) return meters.toFixed(2) + " m";
     return (meters * 100).toFixed(1) + " cm";
+  }
+
+  function drawScope(amp, n, bits) {
+    const dpr = window.devicePixelRatio || 1;
+    const W = Math.max(scope.clientWidth, 320);
+    const H = scope.clientHeight || 210;
+    scope.width = Math.round(W * dpr);
+    scope.height = Math.round(H * dpr);
+    const ctx = scope.getContext("2d");
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, W, H);
+
+    const padX = 26, padY = 20;
+    const plotW = W - padX * 2, plotH = H - padY * 2;
+    const xOf = (t) => padX + t * plotW;
+    const yOf = (v) => padY + (1 - (v + 1) / 2) * plotH;
+
+    ctx.strokeStyle = "rgba(162,28,175,.22)";
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    for (let gx = 0; gx <= 4; gx++) {
+      const x = padX + (plotW * gx) / 4;
+      ctx.moveTo(x, padY);
+      ctx.lineTo(x, padY + plotH);
+    }
+    for (let gy = 0; gy <= 4; gy++) {
+      const y = padY + (plotH * gy) / 4;
+      ctx.moveTo(padX, y);
+      ctx.lineTo(padX + plotW, y);
+    }
+    ctx.stroke();
+
+    ctx.strokeStyle = "rgba(255,255,255,.35)";
+    ctx.beginPath();
+    ctx.moveTo(padX, yOf(0));
+    ctx.lineTo(padX + plotW, yOf(0));
+    ctx.stroke();
+
+    const levels = Math.pow(2, bits);
+    ctx.setLineDash([5, 8]);
+    ctx.strokeStyle = "rgba(162,28,175,.5)";
+    ctx.fillStyle = "rgba(233,201,238,.55)";
+    ctx.font = "10px Consolas, monospace";
+    ctx.textAlign = "right";
+    for (let q = 0; q < levels; q++) {
+      const v = levels === 1 ? 0 : (q / (levels - 1)) * 2 - 1;
+      const y = yOf(v);
+      ctx.beginPath();
+      ctx.moveTo(padX, y);
+      ctx.lineTo(padX + plotW, y);
+      ctx.stroke();
+      ctx.fillText(String(q), padX - 6, y + 3);
+    }
+    ctx.setLineDash([]);
+
+    ctx.beginPath();
+    for (let s = 0; s <= 240; s++) {
+      const t = s / 240;
+      const v = amp * Math.sin(2 * Math.PI * t);
+      const x = xOf(t), y = yOf(v);
+      if (s === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    }
+    ctx.strokeStyle = "#FFFFFF";
+    ctx.lineWidth = 2;
+    ctx.shadowColor = "rgba(162,28,175,.95)";
+    ctx.shadowBlur = 12;
+    ctx.stroke();
+
+    for (let i = 0; i < n; i++) {
+      const t = i / n;
+      const v = amp * Math.sin(2 * Math.PI * i / n);
+      const x = xOf(t), y = yOf(v);
+      ctx.strokeStyle = "rgba(255,255,255,.45)";
+      ctx.lineWidth = 1;
+      ctx.shadowBlur = 0;
+      ctx.beginPath();
+      ctx.moveTo(x, yOf(0));
+      ctx.lineTo(x, y);
+      ctx.stroke();
+      ctx.shadowColor = "rgba(255,255,255,.9)";
+      ctx.shadowBlur = 14;
+      ctx.fillStyle = "#FFFFFF";
+      ctx.beginPath();
+      ctx.arc(x, y, 3.6, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.shadowBlur = 0;
   }
 
   function convert() {
@@ -349,6 +679,7 @@
       binParts.push(bin);
 
       const tr = document.createElement("tr");
+      tr.style.animationDelay = (i * 32) + "ms";
       tr.innerHTML =
         "<td>" + (i + 1) + "</td>" +
         "<td>" + timeMs.toFixed(2) + "</td>" +
@@ -361,6 +692,9 @@
     $("binaryLine").textContent = binParts.join(" ");
     $("totalBits").textContent = n * bits;
     resultsEl.style.display = "block";
+
+    lastParams = { amp: amp, n: n, bits: bits };
+    drawScope(amp, n, bits);
   }
 
   let audioCtx = null;
@@ -384,6 +718,15 @@
     osc.start(now);
     osc.stop(now + 1);
   }
+
+  let resizeTimer = null;
+  window.addEventListener("resize", function () {
+    if (!lastParams) return;
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function () {
+      drawScope(lastParams.amp, lastParams.n, lastParams.bits);
+    }, 120);
+  });
 
   $("convertBtn").addEventListener("click", convert);
   $("playBtn").addEventListener("click", playTone);
