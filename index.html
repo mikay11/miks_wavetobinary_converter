@@ -60,26 +60,55 @@
     color: var(--soft);
   }
   header .who strong { color: var(--white); font-weight: 600; }
-  .hero {
-    display: flex;
-    align-items: center;
-    gap: 26px;
-    max-width: 880px;
-    margin: 0 auto;
-    text-align: left;
+
+  .page { display: flex; align-items: flex-start; }
+
+  .sidebar {
+    flex: 0 0 360px;
+    width: 360px;
+    min-height: 100vh;
+    position: sticky;
+    top: 0;
+    align-self: flex-start;
+    padding: 44px 28px;
+    border-right: 1px solid var(--line);
+    background: linear-gradient(180deg, rgba(106, 27, 110, .30), transparent 60%), var(--ink);
   }
-  .avatar {
-    flex: 0 0 auto;
-    width: 160px;
+  .portrait {
+    display: block;
+    width: 100%;
     height: auto;
-    border-radius: 14px;
+    border-radius: 16px;
     border: 1px solid var(--line-strong);
-    box-shadow: 0 0 34px rgba(162, 28, 175, .35);
+    box-shadow: 0 0 46px rgba(162, 28, 175, .45);
   }
-  @media (max-width: 560px) {
-    .hero { flex-direction: column; text-align: center; gap: 18px; }
-    .avatar { width: 130px; }
+  .sidebar .who {
+    margin-top: 24px;
+    font-size: .95rem;
+    line-height: 1.75;
+    color: var(--soft);
   }
+  .sidebar .who strong { color: var(--white); font-weight: 600; }
+
+  .content { flex: 1 1 auto; min-width: 0; }
+
+  @media (max-width: 860px) {
+    .page { flex-direction: column; }
+    .sidebar {
+      position: static;
+      width: auto;
+      min-height: 0;
+      padding: 24px 20px;
+      border-right: none;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .portrait { width: 130px; flex: 0 0 auto; }
+    .sidebar .who { margin-top: 0; }
+  }
+
   .hero-wave { margin: 20px auto 0; max-width: 880px; height: 40px; }
   .hero-wave svg { width: 100%; height: 100%; }
   .hero-wave path {
@@ -304,17 +333,19 @@
 </style>
 </head>
 <body>
-<header>
-  <div class="hero">
-    <img class="avatar" src="rakstar.png" alt="Michaela Denise Ong">
-    <div class="hero-text">
-      <span class="tag">Signal Lab</span>
-      <h1>Wave to Binary</h1>
-      <div class="who">
-        <strong>Michaela Denise Ong</strong> &nbsp;&middot;&nbsp; Section: <strong>BSCS 3 Section 37</strong>
-      </div>
+<div class="page">
+  <aside class="sidebar">
+    <img class="portrait" src="rakstar.png" alt="Michaela Denise Ong">
+    <div class="who">
+      <strong>Michaela Denise Ong</strong><br>
+      Section: <strong>BSCS 3 Section 37</strong>
     </div>
-  </div>
+  </aside>
+
+  <div class="content">
+<header>
+  <span class="tag">Signal Lab</span>
+  <h1>Wave to Binary</h1>
   <div class="hero-wave">
     <svg viewBox="0 0 1200 80" preserveAspectRatio="none" aria-hidden="true">
       <path id="heroPath"></path>
@@ -464,6 +495,8 @@
 
   <footer>Wave to Binary Converter &middot; Sampling &amp; Quantization</footer>
 </main>
+  </div>
+</div>
 
 <script>
   const $ = (id) => document.getElementById(id);
