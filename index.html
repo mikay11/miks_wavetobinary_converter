@@ -12,9 +12,9 @@
     --crimson: #A61B1B;
     --ember: #C0392B;
     --ember-bright: #E24A3A;
-    --cream: #F0C090;
-    --cream-soft: #DCC0A0;
-    --text: #FBEAD8;
+    --cream: #FFFFFF;
+    --cream-soft: #EFE9E3;
+    --text: #FFFFFF;
     --line: rgba(240, 192, 144, .18);
     --line-strong: rgba(192, 57, 43, .6);
     --mono: "Consolas", "SFMono-Regular", "Courier New", monospace;
@@ -526,7 +526,7 @@
     }
     ctx.stroke();
 
-    ctx.strokeStyle = "rgba(240,192,144,.3)";
+    ctx.strokeStyle = "rgba(255,255,255,.3)";
     ctx.beginPath();
     ctx.moveTo(padX, yOf(0));
     ctx.lineTo(padX + plotW, yOf(0));
@@ -535,7 +535,7 @@
     const levels = Math.pow(2, bits);
     ctx.setLineDash([5, 7]);
     ctx.strokeStyle = "rgba(192,57,43,.5)";
-    ctx.fillStyle = "rgba(220,192,160,.6)";
+    ctx.fillStyle = "rgba(240,236,230,.7)";
     ctx.font = "10px Consolas, monospace";
     ctx.textAlign = "right";
     for (let q = 0; q < levels; q++) {
@@ -556,7 +556,7 @@
       const x = xOf(t), y = yOf(v);
       if (s === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
     }
-    ctx.strokeStyle = "#F0C090";
+    ctx.strokeStyle = "#FFFFFF";
     ctx.lineWidth = 2;
     ctx.shadowColor = "rgba(192,57,43,.4)";
     ctx.shadowBlur = 4;
@@ -567,15 +567,15 @@
       const v = amp * Math.sin(2 * Math.PI * i / n);
       const x = xOf(t), y = yOf(v);
       ctx.shadowBlur = 0;
-      ctx.strokeStyle = "rgba(240,192,144,.4)";
+      ctx.strokeStyle = "rgba(255,255,255,.4)";
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(x, yOf(0));
       ctx.lineTo(x, y);
       ctx.stroke();
-      ctx.shadowColor = "rgba(240,192,144,.5)";
+      ctx.shadowColor = "rgba(255,255,255,.5)";
       ctx.shadowBlur = 5;
-      ctx.fillStyle = "#F0C090";
+      ctx.fillStyle = "#FFFFFF";
       ctx.beginPath();
       ctx.arc(x, y, 3.6, 0, Math.PI * 2);
       ctx.fill();
